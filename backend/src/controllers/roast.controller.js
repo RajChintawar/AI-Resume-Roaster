@@ -1,4 +1,5 @@
 import { parseResume } from "../services/resumeParser.js";
+import { calculateATSScore } from "../utils/atsScorer.js";
 
 export const roastResume = async (req, res) => {
   try {
@@ -13,15 +14,17 @@ export const roastResume = async (req, res) => {
 
     const resumeText = await parseResume(file.path);
 
-    // TEMP: send back text length, not full text
+    const atsResult = calculateATSScore(resumeText, jobDesc);
+
     res.json({
-      message: "Resume parsed successfully",
-      charactersExtracted: resumeText.length,
-      preview: resumeText.slice(0, 200),
+      message: "ATS analysis complete",
+      ats: atsResult,
     });
+
   } catch (err) {
     res.status(500).json({
       error: err.message,
     });
   }
 };
+

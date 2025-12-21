@@ -10,5 +10,9 @@ router.post(
   upload.single("resume"),
   roastResume
 );
+router.get("/roast", (req, res) => {
+  res.send("Roast API is alive. Use POST, not GET 😈");
+});
+
 
 export default router;
