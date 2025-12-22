@@ -18,7 +18,13 @@ const [jobDesc, setJobDesc] = useState("");
     return;
   }
 
-  navigate("/roast");
+navigate("/roast", {
+  state: {
+    resumeFile,
+    jobRole,
+    jobDesc,
+  },
+});
 };
 
  

@@ -1,5 +1,7 @@
 import { parseResume } from "../services/resumeParser.js";
 import { calculateATSScore } from "../utils/atsScorer.js";
+import { generateRoast } from "../services/ai.service.js";
+
 
 export const roastResume = async (req, res) => {
   try {
@@ -16,10 +18,19 @@ export const roastResume = async (req, res) => {
 
     const atsResult = calculateATSScore(resumeText, jobDesc);
 
-    res.json({
-      message: "ATS analysis complete",
-      ats: atsResult,
-    });
+    const aiResult = await generateRoast({
+  resumeText,
+  ats: atsResult,
+  jobRole,
+});
+
+res.json({
+  message: "Resume roasted successfully 😈",
+  ats: atsResult,
+  roast: aiResult.roast,
+  summary: aiResult.summary,
+});
+
 
   } catch (err) {
     res.status(500).json({
