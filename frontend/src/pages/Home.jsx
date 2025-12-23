@@ -108,22 +108,22 @@ export default function Home() {
             <div className="bg-gray-800/60 p-6 rounded-xl border border-gray-700">
               📄 <p className="mt-3 font-semibold">Upload Resume</p>
               <p className="text-sm text-gray-400 mt-2">
-                PDF, DOCX — we judge all formats equally.
-              </p>
+Upload your resume in PDF or DOCX format. 
+      No templates, no restrictions — just your raw resume, exactly how recruiters see it.              </p>
             </div>
 
             <div className="bg-gray-800/60 p-6 rounded-xl border border-gray-700">
               🤖 <p className="mt-3 font-semibold">AI Analyzes</p>
               <p className="text-sm text-gray-400 mt-2">
-                Structure, skills, keywords, and your delusions.
-              </p>
+We analyze structure, keywords, skills, formatting, and ATS compatibility.
+      Basically, we check everything recruiters silently judge you for.              </p>
             </div>
 
             <div className="bg-gray-800/60 p-6 rounded-xl border border-gray-700">
               🔥 <p className="mt-3 font-semibold">You Get Roasted</p>
               <p className="text-sm text-gray-400 mt-2">
-                Brutal feedback + fixes, not fake motivation.
-              </p>
+You get a brutally honest roast, ATS score, and clear improvement tips —
+      no fake motivation, only fixes that actually help.              </p>
             </div>
           </div>
         </div>
