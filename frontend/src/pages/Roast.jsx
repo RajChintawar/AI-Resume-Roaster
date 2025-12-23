@@ -74,6 +74,8 @@ export default function Roast() {
       </p>
     );
   }
+           console.log(import.meta.env.VITE_API_BASE_URL);
+
 
   return (
     <div className="min-h-screen px-4 py-12 flex justify-center">
