@@ -1,42 +1,78 @@
 import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleScroll = (id) => {
+    setOpen(false);
+
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  // 🔥 NEW: scroll to upload (top of home)
+  const handleUpload = () => {
+    setOpen(false);
+
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 100);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-[#0f1117]/90 backdrop-blur border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        
+
         {/* Brand */}
-        <div className="flex flex-col leading-tight">
-          <span className="text-xl font-bold text-white tracking-wide">
+        <Link to="/" className="flex flex-col leading-tight">
+          <span className="text-xl font-bold text-white">
             Nastyy Resume
           </span>
           <span className="text-xs text-gray-400">
             This roasts you — because sugarcoating gets you rejected.
           </span>
-        </div>
+        </Link>
 
-        {/* Desktop Menu */}
+        {/* Desktop */}
         <div className="hidden md:flex items-center gap-8 text-sm">
-          <a href="#roast" className="text-gray-300 hover:text-white transition">
-            Roast Me
-          </a>
-          <a href="#how" className="text-gray-300 hover:text-white transition">
+
+          <button
+            onClick={() => handleScroll("how")}
+            className="text-gray-300 hover:text-white transition"
+          >
             How It Works
-          </a>
-          <a href="#about" className="text-gray-300 hover:text-white transition">
+          </button>
+
+          <button
+            onClick={() => handleScroll("about")}
+            className="text-gray-300 hover:text-white transition"
+          >
             About
-          </a>
-          <a
-            href="#try"
+          </button>
+
+          <button
+            onClick={handleUpload}
             className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition"
           >
-            Try Now
-          </a>
+            Upload Resume
+          </button>
         </div>
 
-        {/* Mobile Button */}
+        {/* Mobile Toggle */}
         <button
           onClick={() => setOpen(!open)}
           className="md:hidden text-white text-2xl"
@@ -48,21 +84,27 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {open && (
         <div className="md:hidden bg-[#0f1117] border-t border-white/10 px-6 py-4 space-y-4">
-          <a href="#roast" className="block text-gray-300 hover:text-white">
-            Roast Me
-          </a>
-          <a href="#how" className="block text-gray-300 hover:text-white">
-            How It Works
-          </a>
-          <a href="#about" className="block text-gray-300 hover:text-white">
-            About
-          </a>
-          <a
-            href="#try"
-            className="block text-center px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium"
+
+          <button
+            onClick={() => handleScroll("how")}
+            className="block w-full text-left text-gray-300 hover:text-white"
           >
-            Try Now
-          </a>
+            How It Works
+          </button>
+
+          <button
+            onClick={() => handleScroll("about")}
+            className="block w-full text-left text-gray-300 hover:text-white"
+          >
+            About
+          </button>
+
+          <button
+            onClick={handleUpload}
+            className="block text-center w-full px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium"
+          >
+            Upload Resume
+          </button>
         </div>
       )}
     </nav>

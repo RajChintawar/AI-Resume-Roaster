@@ -3,6 +3,9 @@ import RoastCard from "../components/RoastCard";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+
+
+
 export default function Roast() {
   const location = useLocation();
   const { resumeFile, jobRole, jobDesc } = location.state || {};
