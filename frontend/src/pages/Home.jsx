@@ -13,7 +13,7 @@ const [jobDesc, setJobDesc] = useState("");
   };
 
   const handleRoast = () => {
-  if (!resumeFile || !jobRole || !jobDesc) {
+  if (!resumeFile ) {
     alert("Upload resume, enter job role and job description. Don’t speedrun life.");
     return;
   }

@@ -8,7 +8,7 @@ export const roastResume = async (req, res) => {
     const { jobRole, jobDesc } = req.body;
     const file = req.file;
 
-    if (!file || !jobRole || !jobDesc) {
+    if (!file ) {
       return res.status(400).json({
         error: "Resume, job role, and job description are required",
       });
@@ -16,8 +16,11 @@ export const roastResume = async (req, res) => {
 
     const resumeText = await parseResume(file.path);
 
-    const atsResult = calculateATSScore(resumeText, jobDesc);
+let atsResult = null;
 
+if (jobDesc) {
+  atsResult = calculateATSScore(resumeText, jobDesc);
+}
     const aiResult = await generateRoast({
   resumeText,
   ats: atsResult,

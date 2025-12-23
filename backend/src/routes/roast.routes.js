@@ -1,6 +1,9 @@
 import express from "express";
 import upload from "../config/multer.js";
+// import multer from "multer";
+
 import { roastResume } from "../controllers/roast.controller.js";
+// const upload = multer({ dest: "uploads/" });
 
 const router = express.Router();
 

@@ -22,7 +22,7 @@ var roastResume = function roastResume(req, res) {
           _req$body = req.body, jobRole = _req$body.jobRole, jobDesc = _req$body.jobDesc;
           file = req.file;
 
-          if (!(!file || !jobRole || !jobDesc)) {
+          if (file) {
             _context.next = 5;
             break;
           }
@@ -37,15 +37,20 @@ var roastResume = function roastResume(req, res) {
 
         case 7:
           resumeText = _context.sent;
-          atsResult = (0, _atsScorer.calculateATSScore)(resumeText, jobDesc);
-          _context.next = 11;
+          atsResult = null;
+
+          if (jobDesc) {
+            atsResult = (0, _atsScorer.calculateATSScore)(resumeText, jobDesc);
+          }
+
+          _context.next = 12;
           return regeneratorRuntime.awrap((0, _aiService.generateRoast)({
             resumeText: resumeText,
             ats: atsResult,
             jobRole: jobRole
           }));
 
-        case 11:
+        case 12:
           aiResult = _context.sent;
           res.json({
             message: "Resume roasted successfully 😈",
@@ -53,22 +58,22 @@ var roastResume = function roastResume(req, res) {
             roast: aiResult.roast,
             summary: aiResult.summary
           });
-          _context.next = 18;
+          _context.next = 19;
           break;
 
-        case 15:
-          _context.prev = 15;
+        case 16:
+          _context.prev = 16;
           _context.t0 = _context["catch"](0);
           res.status(500).json({
             error: _context.t0.message
           });
 
-        case 18:
+        case 19:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 15]]);
+  }, null, null, [[0, 16]]);
 };
 
 exports.roastResume = roastResume;

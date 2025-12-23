@@ -18,4 +18,17 @@ app.get("/", (req, res) => {
   res.send("Backend alive. Ready to roast resumes 🔥");
 });
 
+
+// 🔴 Multer / body parsing error handler
+app.use((err, req, res, next) => {
+  if (err instanceof Error) {
+    return res.status(400).json({
+      error: err.message,
+    });
+  }
+
+  next();
+});
+
+
 export default app;

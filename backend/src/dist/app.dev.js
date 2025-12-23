@@ -25,6 +25,16 @@ app.use("/api", _roastRoutes["default"]); // health check
 
 app.get("/", function (req, res) {
   res.send("Backend alive. Ready to roast resumes 🔥");
+}); // 🔴 Multer / body parsing error handler
+
+app.use(function (err, req, res, next) {
+  if (err instanceof Error) {
+    return res.status(400).json({
+      error: err.message
+    });
+  }
+
+  next();
 });
 var _default = app;
 exports["default"] = _default;

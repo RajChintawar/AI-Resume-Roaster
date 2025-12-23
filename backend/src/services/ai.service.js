@@ -16,16 +16,43 @@ const getClient = () => {
   return openai;
 };
 
-export const generateRoast = async ({ resumeText, ats, jobRole }) => {
+export const generateRoast = async ({
+  resumeText,
+  ats = null,
+  jobRole = "",
+  jobDesc = "",
+}) => {
   const client = getClient();
+
+  // 🧠 Context building (THIS IS THE SMART PART)
+  const roleContext = jobRole
+    ? `Target Job Role: ${jobRole}`
+    : `No specific job role provided`;
+
+  const atsContext = ats
+    ? `
+ATS Score: ${ats.score}%
+Missing Keywords: ${
+        ats.missingKeywords.length > 0
+          ? ats.missingKeywords.join(", ")
+          : "None"
+      }
+`
+    : `
+No ATS score provided.
+Do a general resume evaluation instead of keyword matching.
+`;
+
+  const jdContext = jobDesc
+    ? `Job Description was provided and used for analysis.`
+    : `No job description provided.`;
 
   const prompt = `
 You are a brutally honest technical recruiter.
 
-Job Role: ${jobRole}
-ATS Score: ${ats.score}%
-
-Missing Keywords: ${ats.missingKeywords.join(", ") || "None"}
+${roleContext}
+${jdContext}
+${atsContext}
 
 Resume Content:
 """
@@ -35,11 +62,16 @@ ${resumeText.slice(0, 3000)}
 Rules:
 - Be harsh but constructive
 - No personal insults
-- Focus on skills, experience, and clarity
+- Do NOT assume missing skills unless clearly absent
+- If no ATS context exists, focus on clarity, impact, and credibility
 - Output ONLY valid JSON in this format:
 
 {
-  "roast": ["Point 1", "Point 2", "Point 3"],
+  "roast": [
+    "Point 1",
+    "Point 2",
+    "Point 3"
+  ],
   "summary": "One-line verdict"
 }
 `;
@@ -49,7 +81,6 @@ Rules:
     messages: [{ role: "user", content: prompt }],
     temperature: 0.7,
   });
-console.log("ENV KEY PRESENT:", !!process.env.OPENAI_API_KEY);
 
   return JSON.parse(response.choices[0].message.content);
 };
