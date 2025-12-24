@@ -60,10 +60,11 @@ ${resumeText.slice(0, 3000)}
 """
 
 Rules:
-- Be harsh but constructive
-- No personal insults
-- Do NOT assume missing skills unless clearly absent
-- If no ATS context exists, focus on clarity, impact, and credibility
+Act as an Indian recruiter.
+Give a clear verdict: Shortlist or Reject.
+If rejected, list the TOP 3 reasons only.
+No advice, no motivation, only facts.
+
 - Output ONLY valid JSON in this format:
 
 {
@@ -71,6 +72,8 @@ Rules:
     "Point 1",
     "Point 2",
     "Point 3"
+        "Point 4"
+
   ],
   "summary": "One-line verdict"
 }
