@@ -11,7 +11,7 @@ var _express = _interopRequireDefault(require("express"));
 
 var _cors = _interopRequireDefault(require("cors"));
 
-var _roastRoutes = _interopRequireDefault(require("./routes/roast.routes.js"));
+var _atsRoutes = _interopRequireDefault(require("./routes/ats.routes.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -21,7 +21,7 @@ var app = (0, _express["default"])();
 app.use((0, _cors["default"])());
 app.use(_express["default"].json()); // routes
 
-app.use("/api", _roastRoutes["default"]); // health check
+app.use("/api", _atsRoutes["default"]); // health check
 
 app.get("/", function (req, res) {
   res.send("Backend alive. Ready to roast resumes 🔥");
