@@ -7,12 +7,13 @@ exports.roastResume = void 0;
 
 var _resumeParser = require("../services/resumeParser.js");
 
-var _atsScorer = require("../utils/atsScorer.js");
-
 var _aiService = require("../services/ai.service.js");
 
+var _atsEngine = require("../ats/ats.engine.js");
+
+// import { calculateATSScore } from "../utils/atsScorer.js";
 var roastResume = function roastResume(req, res) {
-  var _req$body, jobRole, jobDesc, file, resumeText, atsResult, aiResult;
+  var _req$body, jobRole, jobDesc, file, resumeText, atsAutopsyResult, aiResult;
 
   return regeneratorRuntime.async(function roastResume$(_context) {
     while (1) {
@@ -28,7 +29,7 @@ var roastResume = function roastResume(req, res) {
           }
 
           return _context.abrupt("return", res.status(400).json({
-            error: "Resume, job role, and job description are required"
+            error: "Resume file is required"
           }));
 
         case 5:
@@ -37,33 +38,36 @@ var roastResume = function roastResume(req, res) {
 
         case 7:
           resumeText = _context.sent;
-          atsResult = null;
-
-          if (jobDesc) {
-            atsResult = (0, _atsScorer.calculateATSScore)(resumeText, jobDesc);
-          }
-
-          _context.next = 12;
+          atsAutopsyResult = (0, _atsEngine.runATSAutopsy)({
+            resumeText: resumeText,
+            targetRole: jobRole || "Frontend Developer"
+          });
+          _context.next = 11;
           return regeneratorRuntime.awrap((0, _aiService.generateRoast)({
             resumeText: resumeText,
-            ats: atsResult,
+            ats: atsAutopsyResult,
             jobRole: jobRole
           }));
 
-        case 12:
+        case 11:
           aiResult = _context.sent;
           res.json({
-            message: "Resume roasted successfully 😈",
-            ats: atsResult,
+            message: "Resume diagnosis completed ☠️",
+            ats: {
+              score: atsAutopsyResult.atsScore,
+              verdict: atsAutopsyResult.verdict,
+              flags: atsAutopsyResult.flags
+            },
             roast: aiResult.roast,
             summary: aiResult.summary
           });
           _context.next = 19;
           break;
 
-        case 16:
-          _context.prev = 16;
+        case 15:
+          _context.prev = 15;
           _context.t0 = _context["catch"](0);
+          console.error("ROAST CONTROLLER ERROR:", _context.t0);
           res.status(500).json({
             error: _context.t0.message
           });
@@ -73,7 +77,7 @@ var roastResume = function roastResume(req, res) {
           return _context.stop();
       }
     }
-  }, null, null, [[0, 16]]);
+  }, null, null, [[0, 15]]);
 };
 
 exports.roastResume = roastResume;

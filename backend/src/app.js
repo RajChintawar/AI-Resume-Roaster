@@ -4,6 +4,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import atsRoutes from "./routes/ats.routes.js";
+import roastRoutes from "./routes/roast.routes.js";
 
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 
 // routes
 app.use("/api", atsRoutes);
+app.use("/api", roastRoutes);
 
 // health check
 app.get("/", (req, res) => {

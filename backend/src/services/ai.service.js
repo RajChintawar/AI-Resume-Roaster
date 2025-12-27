@@ -29,19 +29,24 @@ export const generateRoast = async ({
     ? `Target Job Role: ${jobRole}`
     : `No specific job role provided`;
 
-  const atsContext = ats
-    ? `
-ATS Score: ${ats.score}%
-Missing Keywords: ${
-        ats.missingKeywords.length > 0
-          ? ats.missingKeywords.join(", ")
-          : "None"
-      }
+const atsContext = ats
+  ? `
+ATS Score: ${ats.atsScore}
+ATS Verdict: ${ats.verdict}
+
+ATS Flags:
+${
+  ats.flags.length > 0
+    ? ats.flags.map(f => `- ${f.code}: ${f.message}`).join("\n")
+    : "No major ATS issues detected."
+}
 `
-    : `
-No ATS score provided.
-Do a general resume evaluation instead of keyword matching.
+  : `
+No ATS data provided.
+Do a general resume evaluation instead.
 `;
+
+
 
   const jdContext = jobDesc
     ? `Job Description was provided and used for analysis.`

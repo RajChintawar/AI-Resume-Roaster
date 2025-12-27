@@ -36,7 +36,9 @@ var generateRoast = function generateRoast(_ref) {
           client = getClient(); // 🧠 Context building (THIS IS THE SMART PART)
 
           roleContext = jobRole ? "Target Job Role: ".concat(jobRole) : "No specific job role provided";
-          atsContext = ats ? "\nATS Score: ".concat(ats.score, "%\nMissing Keywords: ").concat(ats.missingKeywords.length > 0 ? ats.missingKeywords.join(", ") : "None", "\n") : "\nNo ATS score provided.\nDo a general resume evaluation instead of keyword matching.\n";
+          atsContext = ats ? "\nATS Score: ".concat(ats.atsScore, "\nATS Verdict: ").concat(ats.verdict, "\n\nATS Flags:\n").concat(ats.flags.length > 0 ? ats.flags.map(function (f) {
+            return "- ".concat(f.code, ": ").concat(f.message);
+          }).join("\n") : "No major ATS issues detected.", "\n") : "\nNo ATS data provided.\nDo a general resume evaluation instead.\n";
           jdContext = jobDesc ? "Job Description was provided and used for analysis." : "No job description provided.";
           prompt = "\nYou are a brutally honest technical recruiter.\n\n".concat(roleContext, "\n").concat(jdContext, "\n").concat(atsContext, "\n\nResume Content:\n\"\"\"\n").concat(resumeText.slice(0, 3000), "\n\"\"\"\n\nRules:\nAct as an Indian recruiter.\nGive a clear verdict: Shortlist or Reject.\nIf rejected, list the TOP 3 reasons only.\nNo advice, no motivation, only facts.\n\n- Output ONLY valid JSON in this format:\n\n{\n  \"roast\": [\n    \"Point 1\",\n    \"Point 2\",\n    \"Point 3\"\n        \"Point 4\"\n\n  ],\n  \"summary\": \"One-line verdict\"\n}\n");
           _context.next = 8;
