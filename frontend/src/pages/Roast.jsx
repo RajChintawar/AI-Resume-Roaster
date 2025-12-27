@@ -2,6 +2,7 @@ import ScoreMeter from "../components/ScoreMeter";
 import RoastCard from "../components/RoastCard";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import ATSFlags from "../components/ATSFlags";
 
 
 
@@ -21,6 +22,7 @@ export default function Roast() {
     if (score >= 50) return "Borderline 😐";
     return "Reject ❌";
   };
+{ats && <ATSFlags flags={ats.flags} />}
 
   const API_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -101,8 +103,10 @@ export default function Roast() {
               <div className="text-center sm:text-right">
                 <p className="text-gray-400 text-xs sm:text-sm">Verdict</p>
                 <p className="text-xl sm:text-2xl font-semibold">
-                  {getVerdict(ats.score)}
-                </p>
+{ats.verdict === "PASS" && "Hire ✅"}
+  {ats.verdict === "RISK" && "Borderline 😐"}
+  {ats.verdict === "FAIL" && "Reject ❌"}                
+  </p>
               </div>
             </>
           ) : (
