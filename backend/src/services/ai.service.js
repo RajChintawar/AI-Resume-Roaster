@@ -61,14 +61,14 @@ ${atsContext}
 
 Resume Content:
 """
-${resumeText.slice(0, 3000)}
+${resumeText.slice(0, 1500)}
 """
 
 Rules:
-Act as an Indian recruiter.
-Give a clear verdict: Shortlist or Reject.
-If rejected, list the TOP 3 reasons only.
-No advice, no motivation, only facts.
+Act as an Indian recruiter for MNC's or startup.
+Give a clear verdict what is fault or mistake in the resume which would your chances to get rejected.
+If rejected, list the TOP 3 reason in breif and to the point.
+Give advice for improvement check must be two or one page what is ideal and all.
 
 - Output ONLY valid JSON in this format:
 
