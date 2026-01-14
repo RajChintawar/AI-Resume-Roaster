@@ -1,32 +1,22 @@
 import ScoreMeter from "../components/ScoreMeter";
 import RoastCard from "../components/RoastCard";
+import ATSFlags from "../components/ATSFlags";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ATSFlags from "../components/ATSFlags";
-
-
-
 
 export default function Roast() {
   const location = useLocation();
-  const { resumeFile, jobRole, jobDesc } = location.state || {};
-
-  const [loading, setLoading] = useState(true);
-  const [ats, setAts] = useState(null);
-  const [error, setError] = useState(null);
-  const [roast, setRoast] = useState([]);
-  const [summary, setSummary] = useState("");
-
-  const getVerdict = (score) => {
-    if (score >= 75) return "Hire ✅";
-    if (score >= 50) return "Borderline 😐";
-    return "Reject ❌";
-  };
-{ats && <ATSFlags flags={ats.flags} />}
+  const { resumeFile, jobRole } = location.state || {};
 
   const API_URL = import.meta.env.VITE_API_BASE_URL;
 
-  // 🔥 BACKEND CALL
+  const [loading, setLoading] = useState(true);       // ATS loading
+  const [aiLoading, setAiLoading] = useState(false);  // AI loading
+  const [ats, setAts] = useState(null);
+  const [roast, setRoast] = useState([]);
+  const [summary, setSummary] = useState("");
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     if (!resumeFile) {
       setError("Missing resume");
@@ -34,49 +24,70 @@ export default function Roast() {
       return;
     }
 
-    const roastResume = async () => {
+    const runATSFirst = async () => {
       try {
-        const formData = new FormData();
-        formData.append("resume", resumeFile);
+        /* =====================
+           STEP 1: ATS ONLY
+        ===================== */
+        const atsForm = new FormData();
+        atsForm.append("resume", resumeFile);
+        if (jobRole) atsForm.append("jobRole", jobRole);
 
-        if (jobRole) formData.append("jobRole", jobRole);
-        if (jobDesc) formData.append("jobDesc", jobDesc);
-
-        const res = await fetch(`${API_URL}/api/roast`, {
+        const atsRes = await fetch(`${API_URL}/api/ats-only`, {
           method: "POST",
-          body: formData,
+          body: atsForm,
         });
 
-        const data = await res.json();
+        const atsData = await atsRes.json();
+        if (!atsRes.ok) throw new Error(atsData.error || "ATS failed");
 
-        if (!res.ok) throw new Error(data.error || "Something broke");
+        setAts(atsData.ats);   // ⬅️ IMPORTANT
+        setLoading(false);     // show ATS immediately
 
-        setAts(data.ats || null);
-        setRoast(data.roast || []);
-        setSummary(data.summary || "");
+        /* =====================
+           STEP 2: AI ROAST
+        ===================== */
+        setAiLoading(true);
+
+        const roastForm = new FormData();
+        roastForm.append("resume", resumeFile);
+        if (jobRole) roastForm.append("jobRole", jobRole);
+
+        const roastRes = await fetch(`${API_URL}/api/roast`, {
+          method: "POST",
+          body: roastForm,
+        });
+
+        const roastData = await roastRes.json();
+        if (!roastRes.ok) throw new Error(roastData.error || "Roast failed");
+
+        setRoast(roastData.roast || []);
+        setSummary(roastData.summary || "");
       } catch (err) {
         setError(err.message);
-      } finally {
         setLoading(false);
+      } finally {
+        setAiLoading(false);
       }
     };
 
-    roastResume();
+    runATSFirst();
   }, []);
 
-  // 🔄 LOADING STATE
+  /* =====================
+     LOADING / ERROR STATES
+  ===================== */
   if (loading) {
     return (
-      <p className="min-h-screen flex items-center justify-center text-white text-sm sm:text-base">
-        Roasting your resume… 😈
+      <p className="min-h-screen flex items-center justify-center text-white">
+        Running ATS Autopsy… ☠️
       </p>
     );
   }
 
-  // ❌ ERROR STATE
   if (error) {
     return (
-      <p className="min-h-screen flex items-center justify-center text-red-500 text-sm sm:text-base px-4 text-center">
+      <p className="min-h-screen flex items-center justify-center text-red-500">
         Error: {error}
       </p>
     );
@@ -88,51 +99,61 @@ export default function Roast() {
 
         {/* Header */}
         <h1 className="text-2xl sm:text-3xl font-bold text-center mb-2">
-          Resume Roast Results 🔥
+          Resume Diagnosis ☠️
         </h1>
-        <p className="text-center text-gray-400 text-sm sm:text-base mb-8">
-          Brutally honest. Emotionally unavailable.
+        <p className="text-center text-gray-400 mb-8">
+          Machine verdict first. Human judgment second.
         </p>
 
-        {/* Score + Verdict */}
-        <div className="flex flex-col sm:flex-row gap-6 items-center justify-between bg-gray-800/60 border border-gray-700 rounded-2xl p-5 sm:p-6 mb-8">
-          {ats ? (
-            <>
-              <ScoreMeter score={ats.score} />
+          {/* ATS SCORE + VERDICT */}
+         {/* ================= ATS AUTOPSY ================= */}
+{ats && (
+          <div className="flex flex-col sm:flex-row gap-6 items-center justify-between
+            bg-gray-900 border border-white/10 rounded-2xl p-6 mb-8">
 
-              <div className="text-center sm:text-right">
-                <p className="text-gray-400 text-xs sm:text-sm">Verdict</p>
-                <p className="text-xl sm:text-2xl font-semibold">
-{ats.verdict === "PASS" && "Hire ✅"}
-  {ats.verdict === "RISK" && "Borderline 😐"}
-  {ats.verdict === "FAIL" && "Reject ❌"}                
-  </p>
-              </div>
-            </>
-          ) : (
-            <p className="text-gray-400 italic text-center w-full text-sm">
-              General resume roast  
-              <br className="sm:hidden" />
-              <span className="text-xs sm:text-sm">
-                (Add job role & description for ATS scoring)
-              </span>
-            </p>
-          )}
-        </div>
+            {/* 🔥 FIXED: ats.atsScore */}
+            <ScoreMeter score={ats.atsScore} />
 
-        {/* Roast Points */}
-        <div className="space-y-4">
-          <h2 className="text-lg sm:text-xl font-semibold mb-4">
-            Brutal Feedback
+            <div className="text-center sm:text-right">
+              <p className="text-gray-400 text-sm">Verdict</p>
+              <p className={`text-2xl font-bold ${
+                ats.verdict === "PASS"
+                  ? "text-green-400"
+                  : ats.verdict === "RISK"
+                  ? "text-yellow-400"
+                  : "text-red-400"
+              }`}>
+                {ats.verdict === "PASS" && "Hire ✅"}
+                {ats.verdict === "RISK" && "Borderline 😐"}
+                {ats.verdict === "FAIL" && "Reject ❌"}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ATS FLAGS */}
+        {ats && <ATSFlags flags={ats.flags} />}
+
+
+        {/* ROAST SECTION */}
+        <div className="mt-10 space-y-4">
+          <h2 className="text-lg sm:text-xl font-semibold text-red-400 mb-4">
+            Human Recruiter Roast 🔥
           </h2>
 
+          {aiLoading && (
+            <p className="text-center text-gray-400 italic mb-6">
+              Recruiter is judging your resume… 😈
+            </p>
+          )}
+
           {summary && (
-            <p className="text-center text-gray-400 italic text-sm sm:text-base mb-6">
+            <p className="text-center text-gray-400 italic mb-6">
               {summary}
             </p>
           )}
 
-          {roast.length === 0 ? (
+          {roast.length === 0 && !aiLoading ? (
             <RoastCard text="No roast generated. Resume too boring 😐" />
           ) : (
             roast.map((line, index) => (
@@ -142,10 +163,11 @@ export default function Roast() {
         </div>
 
         {/* Footer */}
-        <p className="mt-10 text-center text-gray-500 text-xs sm:text-sm">
-          Fix these, or keep wondering why recruiters ghost you.
+        <p className="mt-10 text-center text-gray-500 text-sm">
+          Fix these, or enjoy refreshing your inbox forever.
         </p>
       </div>
     </div>
   );
 }
+

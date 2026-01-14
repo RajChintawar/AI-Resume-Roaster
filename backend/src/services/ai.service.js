@@ -90,5 +90,13 @@ Give advice for improvement check must be two or one page what is ideal and all.
     temperature: 0.7,
   });
 
-  return JSON.parse(response.choices[0].message.content);
+const raw = response.choices[0].message.content;
+
+// 🧼 Remove markdown code fences if present
+const cleaned = raw
+  .replace(/```json/g, "")
+  .replace(/```/g, "")
+  .trim();
+
+return JSON.parse(cleaned);
 };

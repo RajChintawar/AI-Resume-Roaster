@@ -1,5 +1,7 @@
 import express from "express";
-import { atsAutopsy } from "../controllers/ats.controller.js";
+import upload from "../config/multer.js";
+
+import { atsOnly } from "../controllers/atsOnly.controller.js";
 
 const router = express.Router();
 
@@ -11,7 +13,9 @@ const router = express.Router();
  *   targetRole: string
  * }
  */
-router.post("/ats-autopsy", atsAutopsy);
+// router.post("/ats-autopsy", atsAutopsy);
+router.post("/ats-only", upload.single("resume"), atsOnly);
+
 
 // sanity check (optional but useful)
 router.get("/ats-autopsy", (req, res) => {

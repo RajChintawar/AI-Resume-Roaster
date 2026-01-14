@@ -26,7 +26,7 @@ var getClient = function getClient() {
 };
 
 var generateRoast = function generateRoast(_ref) {
-  var resumeText, _ref$ats, ats, _ref$jobRole, jobRole, _ref$jobDesc, jobDesc, client, roleContext, atsContext, jdContext, prompt, response;
+  var resumeText, _ref$ats, ats, _ref$jobRole, jobRole, _ref$jobDesc, jobDesc, client, roleContext, atsContext, jdContext, prompt, response, raw, cleaned;
 
   return regeneratorRuntime.async(function generateRoast$(_context) {
     while (1) {
@@ -53,9 +53,12 @@ var generateRoast = function generateRoast(_ref) {
 
         case 8:
           response = _context.sent;
-          return _context.abrupt("return", JSON.parse(response.choices[0].message.content));
+          raw = response.choices[0].message.content; // 🧼 Remove markdown code fences if present
 
-        case 10:
+          cleaned = raw.replace(/```json/g, "").replace(/```/g, "").trim();
+          return _context.abrupt("return", JSON.parse(cleaned));
+
+        case 12:
         case "end":
           return _context.stop();
       }
