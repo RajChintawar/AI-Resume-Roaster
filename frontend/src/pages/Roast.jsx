@@ -155,11 +155,18 @@ export default function Roast() {
 
           {roast.length === 0 && !aiLoading ? (
             <RoastCard text="No roast generated. Resume too boring 😐" />
-          ) : (
-            roast.map((line, index) => (
-              <RoastCard key={index} text={line} />
-            ))
-          )}
+          ) : (roast.map((item, index) => (
+  <RoastCard
+    key={index}
+    text={
+      `${item.section}\n` +
+      `• Problem: ${item.exact_problem}\n` +
+      `• Evidence: ${item.evidence}\n` +
+      `• Why rejected: ${item.why_it_leads_to_rejection}`
+    }
+  />
+)))}
+
         </div>
 
         {/* Footer */}
