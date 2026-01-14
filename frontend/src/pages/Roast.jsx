@@ -80,7 +80,7 @@ export default function Roast() {
   if (loading) {
     return (
       <p className="min-h-screen flex items-center justify-center text-white">
-        Running ATS Autopsy… ☠️
+        Running ATS Autopsy… 
       </p>
     );
   }
@@ -99,7 +99,7 @@ export default function Roast() {
 
         {/* Header */}
         <h1 className="text-2xl sm:text-3xl font-bold text-center mb-2">
-          Resume Diagnosis ☠️
+          Resume Diagnosis ...
         </h1>
         <p className="text-center text-gray-400 mb-8">
           Machine verdict first. Human judgment second.
@@ -111,7 +111,7 @@ export default function Roast() {
           <div className="flex flex-col sm:flex-row gap-6 items-center justify-between
             bg-gray-900 border border-white/10 rounded-2xl p-6 mb-8">
 
-            {/* 🔥 FIXED: ats.atsScore */}
+            {/*  FIXED: ats.atsScore */}
             <ScoreMeter score={ats.atsScore} />
 
             <div className="text-center sm:text-right">
@@ -138,12 +138,12 @@ export default function Roast() {
         {/* ROAST SECTION */}
         <div className="mt-10 space-y-4">
           <h2 className="text-lg sm:text-xl font-semibold text-red-400 mb-4">
-            Human Recruiter Roast 🔥
+            Human Recruiter Roast 
           </h2>
 
           {aiLoading && (
             <p className="text-center text-gray-400 italic mb-6">
-              Recruiter is judging your resume… 😈
+              Recruiter is judging your resume… 
             </p>
           )}
 
