@@ -247,7 +247,7 @@ export default function Home() {
           </p>
 
           <p className="mt-8 text-gray-500">
-            Built by Ragxx. Powered by GPT Go. Inspired by too many rejection emails.
+            Built by Ragxx| Powered by GPT Go| Inspired by too many rejection emails.
           </p>
 
         </div>
