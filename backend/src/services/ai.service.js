@@ -4,13 +4,14 @@ let openai;
 
 const getClient = () => {
   if (!openai) {
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error("OPENAI_API_KEY is not set");
-    }
+    if (!process.env.GROQ_API_KEY) {
+  throw new Error("GROQ_API_KEY is not set");
+}
 
-    openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
+openai = new OpenAI({
+  apiKey: process.env.GROQ_API_KEY,
+  baseURL: "https://api.groq.com/openai/v1",
+});
   }
 
   return openai;
@@ -178,7 +179,7 @@ OUTPUT FORMAT
 
 
   const response = await client.chat.completions.create({
-    model: "gpt-4o-mini",
+model: "llama-3.3-70b-versatile",
     messages: [{ role: "user", content: prompt }],
     temperature: 0.7,
   });
@@ -191,5 +192,14 @@ const cleaned = raw
   .replace(/```/g, "")
   .trim();
 
-return JSON.parse(cleaned);
-};
+try {
+  return JSON.parse(cleaned);
+} catch (err) {
+  console.error("Model returned invalid JSON:", cleaned);
+
+  return {
+    verdict: "REJECT",
+    roast: [],
+    summary: "Failed to parse AI response"
+  };
+}};
