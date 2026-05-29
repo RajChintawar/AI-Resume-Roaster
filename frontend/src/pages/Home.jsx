@@ -96,9 +96,9 @@ export default function Home() {
             </div>
 
             <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-5">
-              <h3 className="text-2xl font-bold">🔥</h3>
+              <h3 className="text-2xl font-bold">Roast</h3>
               <p className="text-gray-400 text-sm mt-2">
-                Brutal Feedback
+               Staright Facts for rejection.
               </p>
             </div>
 
@@ -196,7 +196,7 @@ export default function Home() {
               </h3>
 
               <p className="text-gray-400">
-                Upload your PDF or DOCX resume exactly the way recruiters receive it.
+                Upload your PDF or DOCX resume exactly the way recruiters receive it in the UploadBox.
               </p>
             </div>
 
@@ -204,7 +204,7 @@ export default function Home() {
               <div className="text-4xl mb-4">🤖</div>
 
               <h3 className="text-xl font-semibold mb-3">
-                AI Analysis
+                AI Analysis 
               </h3>
 
               <p className="text-gray-400">
@@ -220,7 +220,7 @@ export default function Home() {
               </h3>
 
               <p className="text-gray-400">
-                No motivational nonsense. Only concrete reasons recruiters reject resumes.
+                No motivational nonsense. FRR no bullshits or encouraging stuff Staright Facts of rejection.
               </p>
             </div>
 
@@ -240,15 +240,14 @@ export default function Home() {
           </h2>
 
           <p className="text-gray-400 text-lg leading-relaxed">
-            Most resume tools are polite.
-            Recruiters are not.
+            Most resume tools are polite but Recruiters are not.
 
             Nastyy Resume simulates how recruiters evaluate your profile,
             highlights ATS risks, and explains exactly why a resume gets ignored.
           </p>
 
           <p className="mt-8 text-gray-500">
-            Built with React. Powered by AI. Inspired by rejection emails.
+            Built by Ragxx. Powered by GPT Go. Inspired by too many rejection emails.
           </p>
 
         </div>
