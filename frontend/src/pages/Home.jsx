@@ -6,6 +6,7 @@ export default function Home() {
   const [resumeFile, setResumeFile] = useState(null);
   const [jobRole, setJobRole] = useState("");
   const [jobDesc, setJobDesc] = useState("");
+
   const navigate = useNavigate();
 
   const handleFileSelect = (file) => {
@@ -14,7 +15,7 @@ export default function Home() {
 
   const handleRoast = () => {
     if (!resumeFile) {
-      alert("Upload resume. Don’t speedrun life.");
+      alert("Upload resume. Don’t speedrun unemployment.");
       return;
     }
 
@@ -30,101 +31,199 @@ export default function Home() {
   return (
     <div className="flex flex-col">
 
-      {/* ================= HERO / ROAST ME ================= */}
-      <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-2xl bg-gray-800/60 backdrop-blur rounded-2xl p-6 sm:p-8 shadow-xl border border-gray-700">
+      {/* ================= HERO ================= */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
 
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-center mb-3">
-            AI Resume Roaster 🔥
+        {/* Background Glow */}
+        <div className="absolute inset-0 bg-gradient-to-b from-red-500/10 via-transparent to-transparent" />
+
+        <div className="relative z-10 max-w-6xl mx-auto text-center">
+
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-red-500/30 bg-red-500/10 text-red-300 text-sm mb-8">
+            🔥 Recruiters reject resumes in seconds
+          </div>
+
+          <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
+            AI Resume
+            <span className="block bg-gradient-to-r from-red-400 via-orange-400 to-yellow-300 bg-clip-text text-transparent">
+              Roaster
+            </span>
           </h1>
 
-          <p className="text-center text-gray-400 text-sm sm:text-base mb-6 sm:mb-8">
-            Upload your resume and get brutally honest feedback, ATS score,
-            and bullet points that don’t sound unemployed.
+          <p className="max-w-2xl mx-auto mt-6 text-lg text-gray-400">
+            ATS Analysis. Recruiter Simulation. Brutal Feedback.
+            Find out why your resume gets ignored before recruiters do.
           </p>
 
-          <UploadBox onFileSelect={handleFileSelect} />
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="#upload"
+              className="px-8 py-4 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 font-semibold shadow-lg hover:scale-105 transition"
+            >
+              Roast My Resume 🔥
+            </a>
 
-          {resumeFile && (
-            <p className="mt-4 text-center text-xs sm:text-sm text-green-400 break-all">
-              Selected: {resumeFile.name}
-            </p>
-          )}
-
-          <div className="mt-6">
-            <label className="block text-xs sm:text-sm text-gray-400 mb-1">
-              Target Job Role (optional)
-            </label>
-            <input
-              type="text"
-              value={jobRole}
-              onChange={(e) => setJobRole(e.target.value)}
-              placeholder="e.g. Frontend Developer, Data Analyst"
-              className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700
-                         focus:outline-none focus:border-red-500 text-sm sm:text-base"
-            />
+            <a
+              href="#how"
+              className="px-8 py-4 rounded-xl border border-gray-700 hover:border-gray-500 transition"
+            >
+              How It Works
+            </a>
           </div>
 
-          <div className="mt-4">
-            <label className="block text-xs sm:text-sm text-gray-400 mb-1">
-              Job Description / Keywords (optional)
-            </label>
-            <textarea
-              rows={4}
-              value={jobDesc}
-              onChange={(e) => setJobDesc(e.target.value)}
-              placeholder="Paste job description or important keywords here..."
-              className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700
-                         focus:outline-none focus:border-red-500 resize-none
-                         text-sm sm:text-base"
-            />
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-20">
+
+            <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-5">
+              <h3 className="text-2xl font-bold">ATS</h3>
+              <p className="text-gray-400 text-sm mt-2">
+                Compatibility Analysis
+              </p>
+            </div>
+
+            <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-5">
+              <h3 className="text-2xl font-bold">AI</h3>
+              <p className="text-gray-400 text-sm mt-2">
+                Recruiter Simulation
+              </p>
+            </div>
+
+            <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-5">
+              <h3 className="text-2xl font-bold">JD</h3>
+              <p className="text-gray-400 text-sm mt-2">
+                Keyword Matching
+              </p>
+            </div>
+
+            <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-5">
+              <h3 className="text-2xl font-bold">🔥</h3>
+              <p className="text-gray-400 text-sm mt-2">
+                Brutal Feedback
+              </p>
+            </div>
+
           </div>
 
-          <button
-            onClick={handleRoast}
-            className="w-full mt-8 py-3 rounded-xl bg-red-600 hover:bg-red-700
-                       transition font-semibold text-base sm:text-lg shadow-lg"
-          >
-            Roast My Resume 🔥
-          </button>
-
-          <p className="mt-6 text-center text-xs text-gray-500">
-            No resumes were emotionally harmed. Maybe.
-          </p>
         </div>
       </section>
 
-      {/* ================= HOW IT WORKS ================= */}
+      {/* ================= UPLOAD SECTION ================= */}
+      <section
+        id="upload"
+        className="py-24 px-6"
+      >
+        <div className="max-w-3xl mx-auto">
+
+          <div className="text-center mb-10">
+            <h2 className="text-4xl font-bold">
+              Upload Your Resume
+            </h2>
+
+            <p className="text-gray-400 mt-3">
+              PDF or DOCX. We’ll judge it harder than recruiters do.
+            </p>
+          </div>
+
+          <div className="bg-gray-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+
+            <div className="flex justify-center">
+              <UploadBox onFileSelect={handleFileSelect} />
+            </div>
+
+            {resumeFile && (
+              <div className="mt-5 p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-center">
+                ✓ {resumeFile.name}
+              </div>
+            )}
+
+            <div className="mt-6">
+              <label className="block text-sm text-gray-400 mb-2">
+                Target Job Role (Optional)
+              </label>
+
+              <input
+                type="text"
+                value={jobRole}
+                onChange={(e) => setJobRole(e.target.value)}
+                placeholder="Frontend Developer, Data Analyst, Java Developer..."
+                className="w-full px-4 py-3 rounded-xl bg-gray-950 border border-gray-700 focus:border-red-500 focus:outline-none"
+              />
+            </div>
+
+            <div className="mt-5">
+              <label className="block text-sm text-gray-400 mb-2">
+                Job Description (Optional)
+              </label>
+
+              <textarea
+                rows={6}
+                value={jobDesc}
+                onChange={(e) => setJobDesc(e.target.value)}
+                placeholder="Paste the job description here..."
+                className="w-full px-4 py-3 rounded-xl bg-gray-950 border border-gray-700 focus:border-red-500 focus:outline-none resize-none"
+              />
+            </div>
+
+            <button
+              onClick={handleRoast}
+              className="w-full mt-8 py-4 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 font-bold text-lg hover:scale-[1.02] transition-all duration-200 shadow-xl"
+            >
+              Roast My Resume 🔥
+            </button>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ================= FEATURES ================= */}
       <section
         id="how"
-        className="min-h-screen px-6 sm:px-12 py-24 bg-gray-900 flex items-center"
+        className="py-24 px-6 bg-gray-900/40"
       >
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-10">
+        <div className="max-w-6xl mx-auto">
+
+          <h2 className="text-4xl font-bold text-center mb-16">
             How It Works
           </h2>
 
-          <div className="grid gap-8 sm:grid-cols-3 text-gray-300">
-            <div className="bg-gray-800/60 p-6 rounded-xl border border-gray-700">
-              📄 <p className="mt-3 font-semibold">Upload Resume</p>
-              <p className="text-sm text-gray-400 mt-2">
-Upload your resume in PDF or DOCX format. 
-      No templates, no restrictions — just your raw resume, exactly how recruiters see it.              </p>
+          <div className="grid md:grid-cols-3 gap-8">
+
+            <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-8">
+              <div className="text-4xl mb-4">📄</div>
+
+              <h3 className="text-xl font-semibold mb-3">
+                Upload Resume
+              </h3>
+
+              <p className="text-gray-400">
+                Upload your PDF or DOCX resume exactly the way recruiters receive it.
+              </p>
             </div>
 
-            <div className="bg-gray-800/60 p-6 rounded-xl border border-gray-700">
-              🤖 <p className="mt-3 font-semibold">AI Analyzes</p>
-              <p className="text-sm text-gray-400 mt-2">
-We analyze structure, keywords, skills, formatting, and ATS compatibility.
-      Basically, we check everything recruiters silently judge you for.              </p>
+            <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-8">
+              <div className="text-4xl mb-4">🤖</div>
+
+              <h3 className="text-xl font-semibold mb-3">
+                AI Analysis
+              </h3>
+
+              <p className="text-gray-400">
+                ATS scoring, keyword matching, formatting review and recruiter simulation.
+              </p>
             </div>
 
-            <div className="bg-gray-800/60 p-6 rounded-xl border border-gray-700">
-              🔥 <p className="mt-3 font-semibold">You Get Roasted</p>
-              <p className="text-sm text-gray-400 mt-2">
-You get a brutally honest roast, ATS score, and clear improvement tips —
-      no fake motivation, only fixes that actually help.              </p>
+            <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-8">
+              <div className="text-4xl mb-4">🔥</div>
+
+              <h3 className="text-xl font-semibold mb-3">
+                Brutal Roast
+              </h3>
+
+              <p className="text-gray-400">
+                No motivational nonsense. Only concrete reasons recruiters reject resumes.
+              </p>
             </div>
+
           </div>
         </div>
       </section>
@@ -132,22 +231,26 @@ You get a brutally honest roast, ATS score, and clear improvement tips —
       {/* ================= ABOUT ================= */}
       <section
         id="about"
-        className="min-h-screen px-6 sm:px-12 py-24 bg-gray-950 flex items-center"
+        className="py-24 px-6"
       >
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+
+          <h2 className="text-4xl font-bold mb-6">
             About Nastyy Resume
           </h2>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Nastyy Resume exists because polite feedback gets people rejected.
-            This tool tells you what recruiters won’t — clearly, brutally,
-            and with fixes you can actually use.
+          <p className="text-gray-400 text-lg leading-relaxed">
+            Most resume tools are polite.
+            Recruiters are not.
+
+            Nastyy Resume simulates how recruiters evaluate your profile,
+            highlights ATS risks, and explains exactly why a resume gets ignored.
           </p>
 
-          <p className="mt-6 text-gray-500 text-sm">
-            Built with React. Fueled by rejection emails.
+          <p className="mt-8 text-gray-500">
+            Built with React. Powered by AI. Inspired by rejection emails.
           </p>
+
         </div>
       </section>
 
